@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
-from flask_swagger_ui import get_swaggerui_blueprint
+from swagger import swaggerui_blueprint, SWAGGER_URL
 
 app = Flask(__name__)
 app.config[
     'SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("user")}:{os.getenv("password")}@db:5432/{os.getenv("db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 db = SQLAlchemy(app)
 
 
@@ -52,17 +53,7 @@ def delete_cake(id):
     return jsonify({'message': 'Cake deleted'}), 200
 
 
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
 
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Cake API"
-    }
-)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 if __name__ == '__main__':
     app.debug = True
