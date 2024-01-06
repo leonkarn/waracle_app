@@ -1,0 +1,103 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Cake API",
+        "description": "API for managing cakes",
+        "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/cakes": {
+            "get": {
+                "summary": "List all cakes",
+                "description": "Retrieve a list of all cakes",
+                "responses": {
+                    "200": {
+                        "description": "A list of cakes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Cake"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Add a new cake",
+                "description": "Create a new cake record",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Cake object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Cake"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Cake created"
+                    }
+                }
+            }
+        },
+        "/cakes/{id}": {
+            "delete": {
+                "summary": "Delete a cake",
+                "description": "Delete a cake by its ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cake deleted"
+                    },
+                    "404": {
+                        "description": "Cake not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Cake": {
+            "type": "object",
+            "required": ["name", "comment", "image_url", "yum_factor"],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Chocolate Cake"
+                },
+                "comment": {
+                    "type": "string",
+                    "example": "Delicious and rich chocolate flavor"
+                },
+                "image_url": {
+                    "type": "string",
+                    "example": "http://example.com/chocolate_cake.jpg"
+                },
+                "yum_factor": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 5
+                }
+            }
+        }
+    }
+}

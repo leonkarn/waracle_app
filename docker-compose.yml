@@ -17,6 +17,10 @@ services:
     build: .
     volumes:
       - .:/app
+    environment:
+      db: postgres
+      user: postgres
+      password: postgres
     ports:
       - 5000:5000
     depends_on:

@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify
-# from models import db, Cake
 from flask_sqlalchemy import SQLAlchemy
+import os
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/postgres'
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("user")}:{os.getenv("password")}@db:5432/{os.getenv("db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 class Cake(db.Model):
     __tablename__ = 'cakes'
@@ -26,24 +29,19 @@ class Cake(db.Model):
         }
 
 
-@app.route('/', methods=['GET'])
-def main_route():
-    return "Hello world"
-
-
 @app.route('/cakes', methods=['GET'])
-def list_cakes():
-    cakes = Cake.query.all()
-    return jsonify([cake.to_dict() for cake in cakes])
+def total_cakes():
+    if request.method == 'GET':
+        cakes = Cake.query.all()
+        return jsonify([cake.to_dict() for cake in cakes])
 
-
-@app.route('/cakes', methods=['POST'])
-def add_cake():
-    data = request.json
-    cake = Cake(name=data['name'], comment=data['comment'], image_url=data['image_url'], yum_factor=data['yum_factor'])
-    db.session.add(cake)
-    db.session.commit()
-    return jsonify(cake.to_dict()), 201
+    elif request.method == 'POST':
+        data = request.json
+        cake = Cake(name=data['name'], comment=data['comment'], image_url=data['image_url'],
+                    yum_factor=data['yum_factor'])
+        db.session.add(cake)
+        db.session.commit()
+        return jsonify(cake.to_dict()), 201
 
 
 @app.route('/cakes/<int:id>', methods=['DELETE'])
@@ -53,6 +51,18 @@ def delete_cake(id):
     db.session.commit()
     return jsonify({'message': 'Cake deleted'}), 200
 
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Cake API"
+    }
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 if __name__ == '__main__':
     app.debug = True

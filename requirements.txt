@@ -3,3 +3,4 @@ Werkzeug==2.0.1
 Flask-SQLAlchemy==2.5.1
 SQLAlchemy==1.4.35
 psycopg2
+flask_swagger_ui
