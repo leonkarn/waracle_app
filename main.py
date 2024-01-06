@@ -8,8 +8,8 @@ app.config[
     'SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("user")}:{os.getenv("password")}@db:5432/{os.getenv("db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-db = SQLAlchemy(app)
 
+db = SQLAlchemy(app)
 
 class Cake(db.Model):
     __tablename__ = 'cakes'
@@ -30,7 +30,7 @@ class Cake(db.Model):
         }
 
 
-@app.route('/cakes', methods=['GET'])
+@app.route('/cakes', methods=['GET','POST'])
 def total_cakes():
     if request.method == 'GET':
         cakes = Cake.query.all()
