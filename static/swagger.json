@@ -3,12 +3,7 @@
     "info": {
         "title": "Cake API",
         "description": "API for managing cakes",
-        "version": "1.0.0"
     },
-    "host": "localhost:5000",
-    "schemes": [
-        "http"
-    ],
     "paths": {
         "/cakes": {
             "get": {
@@ -76,10 +71,6 @@
             "type": "object",
             "required": ["name", "comment", "image_url", "yum_factor"],
             "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
                 "name": {
                     "type": "string",
                     "example": "Chocolate Cake"

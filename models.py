@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+from sqlalchemy.schema import CheckConstraint
 
 app = Flask(__name__)
 app.config[
@@ -17,6 +18,10 @@ class Cake(db.Model):
     comment = db.Column(db.String(200), nullable=False)
     image_url = db.Column(db.String(255), nullable=False)
     yum_factor = db.Column(db.Integer, nullable=False)
+
+    __table_args__ = (
+        CheckConstraint('yum_factor >= 1 AND yum_factor <= 5', name='check_yum_factor'),
+    )
 
     def to_dict(self):
         return {
