@@ -8,7 +8,7 @@ CREATE TABLE cakes (
 
 
 INSERT INTO cakes (name, comment, image_url, yum_factor) VALUES
-('Chocolate Cake', 'Rich and moist chocolate layer cake', 'http://example.com/chocolate.jpg', 5);
+('Chocolate Cake', 'Rich and moist chocolate layer cake', 'http://cakes.com/chocolate.jpg', 5);
 
 INSERT INTO cakes (name, comment, image_url, yum_factor) VALUES
-('Vanilla Sponge Cake', 'Light and fluffy vanilla sponge', 'http://example.com/vanilla.jpg', 4);
+('Vanilla Sponge Cake', 'Light and fluffy vanilla sponge', 'http://cakes.com/vanilla.jpg', 4);

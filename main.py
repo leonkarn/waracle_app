@@ -1,36 +1,11 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-import os
+from flask import request, jsonify
 from swagger import swaggerui_blueprint, SWAGGER_URL
+from models import db, app, Cake
 
-app = Flask(__name__)
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("user")}:{os.getenv("password")}@db:5432/{os.getenv("db")}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-db = SQLAlchemy(app)
 
-class Cake(db.Model):
-    __tablename__ = 'cakes'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), nullable=False)
-    comment = db.Column(db.String(200), nullable=False)
-    image_url = db.Column(db.String(255), nullable=False)
-    yum_factor = db.Column(db.Integer, nullable=False)
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'comment': self.comment,
-            'image_url': self.image_url,
-            'yum_factor': self.yum_factor
-        }
-
-
-@app.route('/cakes', methods=['GET','POST'])
+@app.route('/cakes', methods=['GET', 'POST'])
 def total_cakes():
     if request.method == 'GET':
         cakes = Cake.query.all()
@@ -51,8 +26,6 @@ def delete_cake(id):
     db.session.delete(cake)
     db.session.commit()
     return jsonify({'message': 'Cake deleted'}), 200
-
-
 
 
 if __name__ == '__main__':
