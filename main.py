@@ -22,10 +22,13 @@ def total_cakes():
 
 @app.route('/cakes/<int:id>', methods=['DELETE'])
 def delete_cake(id):
-    cake = Cake.query.get_or_404(id)
+    cake = Cake.query.get(id)
+    if cake is None:
+        raise ValueError(f"Cake with id {id} does not exist")
+
     db.session.delete(cake)
     db.session.commit()
-    return jsonify({'message': 'Cake with id {} deleted'.format(str(id))}), 200
+    return jsonify({'message': f'Cake with id {id} deleted'}), 200
 
 
 if __name__ == '__main__':
