@@ -24,7 +24,6 @@ class CakeAPITestCase(unittest.TestCase):
             db.session.remove()
             db.drop_all()
 
-
     def test_get_cakes(self):
         response = self.app.get('/cakes')
         self.assertEqual(response.status_code, 200)
