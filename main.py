@@ -25,7 +25,7 @@ def delete_cake(id):
     cake = Cake.query.get_or_404(id)
     db.session.delete(cake)
     db.session.commit()
-    return jsonify({'message': 'Cake deleted'}), 200
+    return jsonify({'message': 'Cake with id {} deleted'.format(str(id))}), 200
 
 
 if __name__ == '__main__':
